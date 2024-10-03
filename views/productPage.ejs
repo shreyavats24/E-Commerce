@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/productPage.css">
+    <title>product page</title>
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <form action="/admin/saveProduct" enctype="multipart/form-data" method="POST">
+        <label for="file">Upload Image:</label>
+        <input type="file" name="image" id="file" required>
+        <label for="name">Product Name:</label>
+        <input type="text" name="productName" id="name" required>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required>
+        <label for="size">Volume:</label>
+        <input type="text" name="size" id="size" required>
+        <label for="qty">Quantity:</label>
+        <input type="number" name="qty" id="qty" required>
+        <label for="desc">Description:</label>
+        <input type="text" name="description" id="desc" required>
+        <input type="submit" value="Upload">
+    </form>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

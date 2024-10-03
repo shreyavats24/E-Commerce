@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/order.css">
+</head>
+
+<body>
+  <header class="header">
+    <%- include('./header') %>
+  </header>
+
+  <div class="container mt-5">
+    <a href="#top" style="text-decoration: none;">
+      <h3 style="text-align: center;">orders history</h3>
+    </a>
+    <%for(var i=0; i<len ; i++) {%>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">OrderId: <%= order[i]._id %>
+          </h5>
+          <p class="card-text">
+            <strong>Order Status:</strong>
+            <% if (data.status) { %>
+              <span class="badge bg-success">Confirmed</span>
+              <% } else { %>
+                <span class="badge bg-danger">Pending</span>
+                <% } %>
+          </p>
+          <p class="card-text"><strong>Delivery Address:</strong>
+            <%= order[i].address %>
+          </p>
+          <p class="card-text"><strong>Mode of Payment:</strong>
+            <%= order[i].modeOfPayment %>
+          </p>
+
+          <!-- <hr> -->
+          <p class="text-left"><b>Total Bill:</b>₹<%= order[i].totalBill %>
+          </p>
+
+
+          <h5 class="card-title">Cart Items</h5>
+          <ul class="list-group mb-3">
+
+            <% order[i].cart.forEach(function(item) { %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Product Name: <%= item.pId.productName %>
+                  -<%= item.pQuantity %>pcs
+                    <!-- <span class="badge bg-info">Quantity: <%= item.pQuantity %></span> -->
+                    <span class="badge bg-info">price:₹<%= item.buyPrice %></span>
+              </li>
+              <% }) %>
+
+              <a href="#top" style="text-decoration: none;">Go To Top</a>  
+          </ul>
+        </div>
+      </div><br>
+      <% } %>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+  </footer>
+  <!-- <div class="card-footer text-center">
+    <button class="btn btn-secondary" onclick="window.print()">Print Order</button>
+  </div> -->
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

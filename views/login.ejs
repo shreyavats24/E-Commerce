@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/Sample.css">
+    <title>Log in Page</title>
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="container">
+        <div class="form-container sign-in-container">
+            <form  action="/login" method="POST" id="formData">
+                <h1>Login <img src="/images/perfume-removebg-preview.png" width="45px" alt="user"></h1>
+                <p style="color: red;"><%=errMsg%></p>
+                <!-- errMsg me error display -->
+                <label for="username">username</label>
+                <input class="input" type="text" id="username" name="username" required>
+                <br>
+                <label for="email">Email</label>
+                <input class="input" type="email" name="email" id="email" required>
+                
+                <br>
+                <div class="passcode">
+                    <label for="passcode">password</label>
+                    <input class="input" type="password" id="passcode" name="passcode" placeholder="A-Za-z0-9$%#@ 8 character" required>
+                    <i class="fa-regular fa-eye-slash " id="eye" style="color: black; display:block;"></i>
+                </div>
+                <input type="radio" id="user" name="role" value="user" required >
+                <label for="user">user</label>
+                <input type="radio" id="seller" name="role" value="seller" >
+                <label for="seller">Seller</label>
+                <input type="radio" id="admin" name="role" value="admin">
+                <label for="admin">Admin</label>
+                <button id="login" type="submit" >log in</button> 
+                <a href="/forgetPassword" id="forget">forget password?</a>
+                <p>Don't have an account? <a href="/signup" >Sign Up</a></p>
+                
+            </form>
+        </div>   
+    </div> 
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <!-- <script src="/javascripts/login.js"></script> -->
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script>
+    <script src="/javascripts/togglePassword.js"></script>
+</body>
+</html>

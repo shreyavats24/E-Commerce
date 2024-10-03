@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+</head>
+<body>
+    <header class="header">
+        <%-include("./header")%>
+    </header>
+    <div class="profile-container">
+    <div class="profile-header">
+        <h1>Welcome <%= name %>!</h1>
+    </div>
+    <img src="<%=image%>" id="imgDiv" alt="userImg">
+    <div class="profile-details">
+        
+        <p><strong>Email:</strong> <%= email %></p>
+        <p><strong>Username:</strong> <%= username %></p>
+        <p><strong>Member since:</strong> <%= createdAt%> </p>
+        <form action="/uploadProfile" method="post" enctype="multipart/form-data">
+            <input type="file" name="profile" id="pimg">
+            <button type="submit">Upload Profile Image</button>
+        </form>
+        <a href="/cart/order" id="orderBtn">View Orders</a>
+        <a href="/resetpassword" id="chngeBtn">Change Password</a>
+    </div>
+        <!-- <div class="profile-actions">
+            <a href="/logout" class="logout-button">Log Out</a>
+        </div> -->
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script></body>
+
+</body>
+</html>

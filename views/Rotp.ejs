@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="/stylesheets/otp.css">
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="otp-container">
+        <h2>OTP Verification</h2>
+        <p>Please enter the OTP sent to your email</p>
+        <form class="otp-form" action="/otpSent" method="post">
+            <div class="otp-inputs">
+                <input type="text" name="otp" class="otp-input" maxlength="4" id="otpBox" required placeholder="Enter OTP">
+            </div>
+            <p id="msg" style="display: none;"></p>
+            <button type="submit" class="submit-btn">Verify OTP</button>
+        </form>
+        <!-- <p class="resend">Didn't receive the OTP? <a href="#">Resend OTP</a></p> -->
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script>
+        var submitBtn = document.getElementsByClassName("submit-btn")[0];
+        var otp = document.getElementById("otpBox");
+        console.log("s",submitBtn);
+        var msg = document.getElementById("msg");
+        submitBtn.addEventListener("click",(event)=>{
+            if(otp.value.trim()=="")
+            {
+                alert("fill the otp first");
+            }
+            // alert("clicked");
+            else{
+                event.target.style.display="none";
+                msg.style.display="block";
+                msg.innerHTML="sent.."; 
+            }
+               
+        })
+    </script>
+</body>
+</html>

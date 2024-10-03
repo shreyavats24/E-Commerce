@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/stylesheets/checkOut.css">
+</head>
+<body>
+
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+
+    <div class="checkout-container">
+
+        <!-- Step 1: Review Cart -->
+        <div class="checkout-step active" id="review-cart">
+            <h2>Your Cart</h2>
+            <% cart.forEach((elem)=>{%>
+                <!-- <%=elem%> -->
+            <div class="cart-item">
+                <img src="<%= elem.pId.image %>" alt="Product Image" class="cart-item-image">
+                <div class="item-details">
+                    <h3>Name:<%=elem.pId.productName%></h3>
+                    <p> Quantity:<%=elem.pQuantity %> </p>
+                    <p>Price:₹<%=elem.pId.price%></p> 
+                </div>
+                <!-- <div class="item-total">$100</div> -->
+            </div>
+            <% }) %>
+
+            <div class="cart-summary">
+                <p>Subtotal:₹<%=bill%></p>
+                <%if(bill>0){%>
+                <p>Shipping:₹10</p>
+                <p><strong>Total:₹<%= bill+10 %></strong></p>
+                <%}%>
+            </div>
+            <%if(bill>0){%>
+            <button class="next-button" onclick="showNextStep('shipping-details')">Proceed to Shipping</button>
+            <%}%>    
+        </div>
+       
+        <!-- Step 2: Shipping Details -->
+        <%if(bill>0){%>
+        <div class="checkout-step" id="shipping-details">
+            <%if(bill==0){%>
+                <div style="text-align: center;">Your Cart is emptyy</div>
+            <% } %> 
+            <h2>Shipping Information</h2>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" value="<%=username%>" readonly>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="<%=email%>" readonly>
+            <label for="address">Address</label>
+            <input type="text" id="address" placeholder="123 Main St, City" required>
+            <button class="back-button" onclick="showPreviousStep('review-cart')">Back to Cart</button>
+            <button class="next-button" onclick="showNextStep('payment')">Proceed to Payment</button>
+        </div>
+
+    
+    <div class="checkout-step" id="payment">
+    <h2>Payment Details</h2>
+    
+    <label for="payment-method">Choose Payment Method</label>
+    <select id="payment-method" onchange="togglePaymentFields()">
+        <option value="debit" selected>Debit Card</option>
+        <option value="credit">Credit Card</option>
+        <option value="cod">Cash on Delivery (COD)</option>
+        <option value="upi">UPI</option>
+    </select>
+
+        <!-- Debit/Credit Card Details -->
+        <div id="card-details">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" placeholder="1111-2222-3333-4444">
+
+            <label for="expiry-date">Expiry Date</label>
+            <input type="text" id="expiry-date" placeholder="MM/YY">
+
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="123">
+        </div>
+
+        <!-- UPI Details -->
+        <div id="upi-details" style="display:none;">
+            <label for="upi-id">UPI ID</label>
+            <input type="text" id="upi-id" placeholder="your-upi-id@bank" >
+        </div>
+
+        <!-- COD Message -->
+        <div id="cod-details" style="display:none;">
+            <p><strong>Cash on Delivery</strong> selected. You will pay in cash when your order arrives.</p>
+        </div>
+        <%if(bill>0){%>
+            <button class="back-button" onclick="showPreviousStep('shipping-details')">Back to Shipping</button>
+            <button class="placeorder-button">Place Order</button>
+            <!-- <div style="text-align: center;">Your Cart is emptyy</div> -->
+        <% } %> 
+    
+        
+    </div>
+
+    </div>
+    <%}%>
+      
+
+    <footer>
+        <p>&copy; 2024 Your E-commerce Website</p>
+    </footer>
+    <script src="/javascripts/chckout.js"></script>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js"  crossorigin="anonymous"></script>
+
+</body>
+</html>

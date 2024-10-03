@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile Page</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="profile-container">
+        <div class="profile-header">
+            
+            <h1>Welcome <%= name %>!</h1>
+        </div>
+        <div class="profile-details">
+            <p><strong>Email:</strong> <%= email %></p>
+            <p><strong>Username:</strong> <%= username %></p>
+            <p><strong>Member since:</strong> <%= createdAt%> </p>
+        </div>
+        <button><a href="/admin/productPage" style="text-decoration: none; color: black;">upload product</a></button>
+        
+        <section class="products">
+            <h2 style="text-align: center;">All Perfumes</h2>
+            <div class="product-grid">
+            <!--Product 1 -->
+             
+                  <% productObj.forEach((elem)=> { %>
+                      <div class="product-card" id="<%=elem._id%>">
+                      <img src="<%= elem.image %>" alt="Product 1" width="20px">
+                      <h2><%= elem.productName%></h2>
+                      <p><%= elem.price%></p>
+                      <button class="edit">Edit</button>
+                      <button class="deleteBtn">Delete</button>
+                      </div>
+                  <% }) %>     
+            </div> 
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script></body>
+
+</body>
+</html>

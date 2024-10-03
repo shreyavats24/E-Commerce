@@ -1,0 +1,16 @@
+<div class="logo">Fragrance Hub <img src="/images/perfume-removebg-preview.png" alt="logo"></div>
+    <nav>
+        <ul>
+        <li><a href="/">Home</a></li>
+            <% if(login){%>
+            <li><a href="/logout">logout</a></li>
+                <% } else {%>
+            <li><a href="/login">login</a></li>
+            <li><a href="/signup">Sign up</a></li>
+            <% } %> 
+            
+            <li><a href="/aboutus">About Us</a></li>
+            <a href="/user/profile"><i class="fas fa-user"> <%=username %></i></a>
+            <a href="/cart/cart"><i class="fas fa-shopping-cart"></i></a>
+        </ul>
+    </nav>

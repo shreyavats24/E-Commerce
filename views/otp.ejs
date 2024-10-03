@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="/stylesheets/otp.css">
+</head>
+
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="otp-container">
+        <h2>OTP Verification</h2>
+        <p>Please enter the OTP sent to your email</p>
+        <div class="opt-sub-container">
+            <form class="otp-form" action="/signin" method="POST">
+                <div class="otp-inputs">
+                    <input type="text" name="otp" class="otp-input" maxlength="4" placeholder="Enter OTP">
+                </div>
+                <button type="submit" class="submit-btn">Verify OTP</button>
+            </form>
+            <form action="/verify" method="post">
+                <p id="msg" style="display: none;"></p>
+                <button type="submit" class="resend">Resend OTP</button>
+            </form>
+        </div>
+
+
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script>
+        var resend = document.getElementsByClassName("resend")[0];
+        var msg=document.getElementById("msg");
+        resend.addEventListener("click",(event)=>{
+            event.target.style.display="none";
+            msg.style.display="block";
+            msg.innerHTML="Sent...";
+        })
+    </script>
+</body>
+
+</html>

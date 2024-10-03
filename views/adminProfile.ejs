@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile Page</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Welcome <%= name %>!</h1>
+        </div>
+        <div class="profile-details">
+            <img src="<%=image%>" alt="userImg" id="imgDiv">            
+            <p><strong>Email:</strong> <%= email %></p>
+            <p><strong>Username:</strong> <%= username %></p>
+            <p><strong>Member since:</strong> <%= createdAt%> </p>
+        </div>
+        <span>Click here to upload new products:</span>
+        <button><a href="/admin/productPage" style="text-decoration: none; color: black;">upload product</a></button>
+        <br><br>
+        <form action="/uploadProfile" method="post" enctype="multipart/form-data">
+        Click here to upload profile:<input type="file" name="profile" id="pimg">
+        <button type="submit">Upload Profile Image</button>
+        </form><br>
+        <a href="/admin/data" class="disableBtn" style="text-decoration: none;">Disable User</a>
+        <a href="/admin/sellerDetail" class="disableBtn" style="text-decoration: none;">Disable Seller</a><br>
+        <a href="/cart/order" id="orderBtn">View Orders</a>
+        <a href="/resetpassword" id="chngeBtn">Change Password</a>
+        <section class="products">
+            <h2 style="text-align: center;">All Perfumes</h2>
+            <div class="product-grid">             
+                  <% productObj.forEach((elem)=> { %>
+                      <div class="product-card" id="<%=elem._id%>">
+                      <img src="<%= elem.image %>" alt="Product 1" width="20px"><br>
+                      <label for="name">Name:</label>
+                      <input type="text" name="pname" id="name" value="<%= elem.productName%>"><br><br>
+                      <!-- <h2><%= elem.productName%></h2> -->
+                       <label for="price">Price:</label>
+                       <input type="text" name="price" id="price" value="<%= elem.price%>"><br><br>
+                      <!-- <p><%= elem.price%></p> -->
+                       <label for="size">Volume:</label>
+                       <input type="text" name="Size" id="size" value="<%=elem.Size%>" ><br><br>
+                       <label for="qty">Quantity</label>
+                       <input type="number" name="quantity" id="qty" value="<%=elem.quantity%>"><br><br>
+                       <label for="description">Description</label>
+                       <input type="text" name="description" id="description" value="<%=elem.description%>"><br><br>
+                      <button class="edit">Update</button>
+                      <button class="deleteBtn">Delete</button>
+                      </div>
+                  <% }) %>     
+            </div> 
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script></body>
+    <script src="/javascripts/adminProducts.js"></script>
+</body>
+</html>

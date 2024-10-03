@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Product Listing</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/home.css">
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <main> 
+        <section class="products">
+            <h2 style="text-align: center; padding: 0;">All Perfumes</h2>
+             <div class="product-grid">
+                    <% productObj.forEach((elem)=> { %>
+                        <div class="product-card" id="<%=elem._id%>">
+                        <img src="<%= elem.image %>" alt="Product 1" width="20px">
+                        <h3><%= elem.productName%></h3>
+                        <p>₹<%= elem.price%></p>
+                        <button class="addTocart">Add to cart</button>
+                        <button class="description">Description</button>
+                        </div>
+                    <% }) %>
+            </div> 
+            
+        </section>
+        
+    </main> 
+        <%if(length>5){%>
+        <button id="show-more">Show More</button>
+        <%}%>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script>
+<script src="/javascripts/homePage.js"></script>
+</body>
+</html>

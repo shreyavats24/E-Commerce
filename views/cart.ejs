@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/cart.css">
+    <title>Add to Cart</title>
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <% if(cart.length > 0) { %>    
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+        <div class="cart-items">
+            <% for(var i = 0; i < cart.length; i++) { %>
+                <div class="cart-item" id="<%=cart[i]._id%>" >
+                    <img src="<%= cart[i].pId.image %>" alt="Product Image" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <p class="product-name">Product Name: <%= cart[i].pId.productName %></p>
+                        <p class="product-price">Price: ₹<%= cart[i].pId.price %></p>
+                        <p class="product-price">Volume: <%= cart[i].pId.Size %></p>
+                        <!-- <p>total cost:<%=cart[i].pQuantity*cart[i].pId.price%></p>                         -->
+                        <p id="<%=cart[i]._id%>">Qty:
+                            <button class="minus">-</button> 
+                            <input type="number" min=1 max="<%=cart[i].pId.quantity%>" value="<%= cart[i].pQuantity %>" class="cart-quantity" readonly>
+                            <button class="plus">+</button>
+                        </p>
+                    </div>
+                    <button class="remove-btn">Remove</button>
+                </div>   
+            <% } %>
+        </div>
+        
+        <div class="cart-summary">
+            <p>Total Items: <span id="total-items"><%= cart.length %></span></p>
+            <p>Total Price: <span id="total-price">
+                ₹<%= cart.reduce((total, item) => total + (item.pQuantity * item.pId.price), 0) %>
+            </span></p>
+            <button id="checkout-btn" type="submit" ><a href="/cart/check" style="text-decoration: none;color: white;">Checkout</a></button>
+        </div>
+    </div>
+    <% } %>
+    <%if(cart.length == 0){%>
+        <div class="cart-container" id="empty" style="text-align: center;">Your cart is empty</div>
+    <% }%>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="/javascripts/cart.js"></script>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js"  crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+  <title>About Us</title>
+  <link rel="stylesheet" href="/stylesheets/about.css">
+</head>
+<body>
+
+  <header class="header">
+    <!-- <div class="logo">Fragrance Hub</div>
+    <nav>
+        <ul> -->
+          <%- include('./header') %>
+            <!-- <li><a href="/">Home</a></li>
+            <% if(login){%>
+              <li><a href="/logout">logout</a></li>
+            <% } else {%>
+              <li><a href="/login">login</a></li>
+             <%}%> 
+            <li><a href="/signup">Sign up</a></li>
+            <li><a href="/aboutus">About Us</a></li>
+            <a href="/user/profile"><i class="fas fa-user"> <%=username %></i></a>
+            <%if(role == "user") {%>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <% } %> -->
+        <!-- </ul>
+    </nav> -->
+  </header>
+
+  <section class="about-us">
+    <div class="container">
+        <h2>About Us</h2>
+        <p>
+            At <strong>Fragrance Hub</strong>, we believe that a fragrance is not just a scent; it's an experience, a memory, and a reflection of your unique personality. We’ve curated an exquisite selection of perfumes, crafted with the finest ingredients, designed to awaken your senses and leave a lasting impression.
+        </p>
+        <p>
+            Our journey began with a passion for the art of perfumery. We work with master perfumers from around the world to bring you exceptional, innovative fragrances. Whether you're looking for something fresh and floral, rich and woody, or bold and exotic, we have the perfect scent for every moment.
+        </p>
+        <p>
+            We believe in the power of fragrance to transform how you feel. That's why every bottle we offer is more than just perfume – it's a gateway to elegance, allure, and confidence.
+        </p>
+        <div class="about-image">
+            <img src="https://perfumekart.in/wp-content/uploads/2020/05/best-women-perfumes-banner.jpg" alt="Perfume bottles">
+        </div>
+        <p class="vision">
+            <em>"Our mission is to provide you with exceptional fragrances that inspire and enchant, bringing the magic of perfume into your everyday life."</em>
+        </p>
+    </div>
+</section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 Fragrance Hub. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script></body>
+</body>
+</html>

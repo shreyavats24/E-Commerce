@@ -1,0 +1,145 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f0f0;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* height: 100vh; */
+    margin: 0;
+}
+
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* justify-content: center; */
+    align-items: center;
+    margin:30px auto ;
+    width: 400px;
+    max-width: 80%;
+}
+i{
+    color: white;
+    font-size: 20px;
+    margin-left: 20px;
+}
+.passcode{
+    position:relative;
+}
+#eye{
+    position: absolute;
+    top:41px;
+    left:240px;
+}
+.form-container {
+    /* align-items: center; */
+    padding: 50px;
+    position: relative;
+}
+/* #logo{
+    position: absolute;
+    top:48px;
+} */
+h1 {
+    margin: 0 0 20px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    /* background-color: #5cb85c; */
+    background-color: #81592f;
+    color: #fdc58a;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+p {
+    text-align: center;
+    margin-top: 20px;
+}
+.red{
+    color: red;
+}
+a {
+    color: #26f031;
+    text-decoration: none;   
+}
+#forget{
+    color: blue;
+    margin-left:85px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    /* background-color: #333; */
+    /* background-color: #c71afc; */
+    background-color: #996c38;
+    color: white;
+    padding: 1rem 2rem;
+  }
+  
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  
+
+header .logo {
+    font-size: 1.5rem;
+}
+
+header nav ul li {
+    margin: 0 1rem;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size:20px;
+}
+
+.header-icons input[type="text"] {
+    padding: 0.5rem;
+    margin-right: .5rem;
+}
+
+.header-icons a {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+footer {
+    text-align: center;
+    padding: 4px;
+    background-color: #996c38;
+    color: white;
+    bottom: 0;
+}
+.logo img{
+    width:30px;
+}

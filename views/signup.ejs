@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/perfume-removebg-preview.png">
+    <link rel="stylesheet" href="/stylesheets/Sample.css">
+    <title>Signup in Page</title>
+</head>
+<body>
+    <header class="header">
+        <%- include('./header') %>
+    </header>
+    <div class="container">
+        <div class="form-container sign-in-container">
+            <form action="/verify" method="post" id="formData">
+            <h1> Sign up <img src="/images/perfume-removebg-preview.png" width="45px" alt="user">
+            </h1>
+            <p style="color: red;"><%=errMsg%></p>
+                <label for="username">username</label>
+                <input class="input" type="text" id="username" name="username" required>
+                <br>
+                <label for="email">Email</label>
+                <input class="input" type="email" name="email" id="email" required>
+                <br>
+                <div class="passcode">
+                <label for="passcode">password</label>
+                <input class="input" type="password" id="passcode" name="passcode" placeholder="A-Za-z0-9$%&#@ 8 character" required pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$@%&#])[A-Za-z\d$@%&#]{8,}" title="password should have atleast 8 character">
+                <i class="fa-regular fa-eye-slash eye" id="eye" style="color: black; display:block;"></i>
+                </div>
+                <input type="radio" id="user" name="role" value="user" required >
+                <label for="user">user</label>
+                <input type="radio" id="seller" name="role" value="seller">
+                <label for="seller">Seller</label>
+                <input type="radio" id="admin" name="role" value="admin">
+                <label for="admin">Admin</label>
+                <br>
+                <button id="signup" type="submit">sign up</button>
+                <p>Do have an account? <a href="/login" d="signUpLink">log in</a></p>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Fragrance Hub. All Rights Reserved.</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/c5ef7b291b.js" crossorigin="anonymous"></script>
+    <script src="/javascripts/togglePassword.js"></script>
+    <!-- <script src="/javascripts/login.js"></script> -->
+</body>
+</html>
