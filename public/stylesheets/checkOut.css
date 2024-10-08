@@ -120,7 +120,8 @@ footer {
 .checkout-container {
     width: 100%;
     max-width: 700px;
-    margin: 30px auto;
+    margin:auto;
+    margin-top: 10%;
     background-color: white;
     padding: 10px;
     border-radius: 10px;

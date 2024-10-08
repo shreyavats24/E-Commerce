@@ -5,6 +5,8 @@ body {
     /* justify-content: center; */
     /* align-items: center; */
     /* height: 100vh; */
+    /* position: relative; */
+    height: 100%;
     margin: 0;
 }
 
@@ -15,7 +17,7 @@ body {
     overflow: hidden;
     /* justify-content: center; */
     align-items: center;
-    margin:30px auto ;
+    margin:50px auto ;
     width: 400px;
     max-width: 80%;
 }
@@ -136,9 +138,12 @@ header nav ul li a {
 footer {
     text-align: center;
     padding: 4px;
+    width: 99.3%;
     background-color: #996c38;
     color: white;
-    bottom: 0;
+    position:relative;
+    bottom: -60px;
+    /* margin-bottom:0; */
 }
 .logo img{
     width:30px;

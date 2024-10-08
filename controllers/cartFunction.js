@@ -102,10 +102,46 @@ async function calculateBill(email){
     return totalBill;
 }
 
+async function checkQuantity(cart){
+    let flag=0;
+    let obj ;
+    console.log("inn check qty funct");
+    const products = await productModel.find({isdisable:false});
+    // console.log("Products",products);
+    cart.forEach((elem)=>{
+        products.forEach((pelem)=>{
+            if(pelem._id.equals(elem.pId._id))
+            {
+                console.log("matched!");
+                if(pelem.quantity<elem.pQuantity)
+                {
+                    // console.log("productName",pelem.productName)
+                    obj ={
+                        pname:pelem.productName,
+                        check:0,qty:pelem.quantity,
+                    };
+                    flag=1;
+                }
+            }
+        })
+    })
+    if(flag==1){
+        return obj;
+    }
+    else{
+        obj ={
+            pname:"success",
+            check:1
+        };
+        return obj;
+    }
+    
+}
+
 module.exports={
     calculateBill,
     updateProductQuantity,
     updateQtyEmptyCart,
     deleteItem,
-    emptyCart
+    emptyCart,checkQuantity
 }

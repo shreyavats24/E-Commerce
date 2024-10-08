@@ -19,7 +19,9 @@ const upload = multer({storage: storage});
 // save product that admin or seller is uploading...
 async function saveProduct(req,res){
     try{
-        var data = getUser(req.cookies.mycookie);
+        if(req.body.img.trim() !="" && req.body.productName.trim() !="" && req.body.price.trim() !="" && req.body.size.trim() !="" && req.body.description.trim() !="")
+        {
+            var data = getUser(req.cookies.mycookie);
         var products=await new productModel({
             adminId:data.id,
             image:"/images/"+img,
@@ -45,16 +47,20 @@ async function saveProduct(req,res){
             res.redirect("/");
         })
         .catch((err)=>console.log(err));
+        }
+        else{
+            
+        }
     }
     catch(err){
         console.log("error:",err);
     }
 }
 
-async function deleteProduct(id,res)
+async function deleteProduct(id,res,req)
 {
     try{
-        await productModel.findByIdAndDelete({_id:id});
+        await productModel.findByIdAndUpdate({_id:id});
         var data = getUser(req.cookies.mycookie);
         await userModel.findOneAndUpdate({email:data.email},{ $pull: { products: req.body.id }});
         res.send("successfully");

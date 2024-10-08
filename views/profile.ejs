@@ -22,7 +22,7 @@
         <p><strong>Username:</strong> <%= username %></p>
         <p><strong>Member since:</strong> <%= createdAt%> </p>
         <form action="/uploadProfile" method="post" enctype="multipart/form-data">
-            <input type="file" name="profile" id="pimg">
+            <input type="file" name="profile" id="pimg" required>
             <button type="submit">Upload Profile Image</button>
         </form>
         <a href="/cart/order" id="orderBtn">View Orders</a>

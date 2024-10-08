@@ -65,13 +65,13 @@ router.post("/login", async (req, res) => {
             var user = await userModel.findOne({email: req.body.email});
             if (user) 
             {
-                if (!user.isdisable && user.role==req.body.role &&user.username ==req.body.username) {
+                if (!user.isdisable) {
                     let check = await comparePassword(req.body.passcode, user.password);//compare bcrypt pswrd to plain pssword
                     if (check) {
                         var obj = {
                             username: user.username,
                             email: user.email,
-                            passcode: user.password,
+                            // passcode: user.password,
                             role: user.role,
                             id: user._id,
                             image: user.image
@@ -90,14 +90,15 @@ router.post("/login", async (req, res) => {
                 else if(user.isdisable) {
                     res.send("Sorry,you are disabled by admin!!!")
                 }
-                else if(user.role!=req.body.role || user.username !=req.body.username) {
-                    console.log(req.body);
+                else if(user.username !=req.body.username) {
+                    // console.log(req.body);
                     errorMsg ="Invalid Credentials!!";
                     res.redirect("/login");
                 }
             }
             else{
-                res.redirect("/signup");
+                errorMsg ="Please Signup!!";
+                res.redirect("/login");
             }
         }
         catch (err) {
@@ -105,6 +106,7 @@ router.post("/login", async (req, res) => {
         }
     }
     else{
+        errorMsg ="Invalid Credentials!!";
         res.redirect("/login");
     }
 
@@ -250,7 +252,7 @@ router.post("/forgetPassword", changePassword, async (req, res) => {
     res.render("Rotp", { login: null, username: null, role: null });
     // res.redirect("/login");
 })
-
+// verifying otp
 async function check(req, res, next) {
     // console.log("inn checkk");
     if (req.cookies.mCe) {
@@ -285,7 +287,6 @@ router.post("/change", async (req, res) => {
         try {
             console.log("inside try")
             await userModel.findOneAndUpdate({ email: mail.email }, { password: Bpassword })
-            // res.redirect("/login");
             res.clearCookie("mCe");
             res.send("Successfully Updated!!");
         } catch (err) {

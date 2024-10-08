@@ -11,7 +11,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const commonRouter = require("../routes/commonRouter");
-const adminRouter = require("../routes/adminRouter");
+// const adminRouter = require("../routes/adminRouter");
 const userRouter = require("../routes/userRouter");
 const SellerRouter= require("../routes/SellerRouter");
 const {makeToken,getUser}=require("../controllers/token");
@@ -21,7 +21,7 @@ module.exports = {
     path,
     argon,
     cookieParser,
-    adminRouter,
+    // adminRouter,
     userRouter,
     SellerRouter,
     commonRouter,

@@ -52,7 +52,7 @@ router.post("/saveProduct",upload.single('image'),middleWare,async (req,res)=>{
 //delete product from DB find the elem by _id and delete from both products array and products collection
 router.delete("/deleteProduct",async (req,res)=>{
     try{
-        await deleteProduct(req.body.id,res);
+        await deleteProduct(req.body.id,res,req);
     }
     catch(err){
         console.log(err);

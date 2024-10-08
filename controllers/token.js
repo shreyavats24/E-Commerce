@@ -14,13 +14,13 @@ function makeToken(userObj,singleField = false )
         const payload={
             username:userObj.username,
             email:userObj.email,
-            password:userObj.passcode,
-            role:userObj.role,
+            // password:userObj.passcode,
+        role:userObj.role,
             id:userObj.id,
             image:userObj.image
             // time:userObj.time
         };
-        return jwt.sign(payload,secret,{expiresIn:'10m'});
+        return jwt.sign(payload,secret,{expiresIn:'1h'});
     }
 }
 

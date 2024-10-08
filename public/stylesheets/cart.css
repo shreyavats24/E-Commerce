@@ -54,10 +54,12 @@ i{
 }
 footer {
     text-align: center;
-    padding: 4px;
+    padding: 10px;
     background-color: #996c38;
     color: white;
-    margin-top: 500px;
+    position: absolute;
+    width: 100%;
+    /* margin-top: 500px; */
     bottom: 0;
 }
 

@@ -1,10 +1,16 @@
-const {express,cookieParser,commonRouter,userRouter,SellerRouter,path}=require("./controllers/allPackages");
+// const {express,cookieParser,commonRouter,userRouter,SellerRouter,path}=require("./controllers/allPackages");
 // adminRouter,
+const express = require("express");
 const app = express();
+const path = require("path");
+const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const jwtMethod = require("./controllers/passport");
 const adminRouter = require("./routes/sampleAdmin");
+const commonRouter = require("./routes/commonRouter");
+const userRouter = require("./routes/userRouter");
 const resetRouter= require("./routes/resetPassword");
+const SellerRouter = require("./routes/SellerRouter");
 const cartRouter = require("./routes/CartRouter");
 app.use(passport.initialize());
 app.set("view engine","ejs");

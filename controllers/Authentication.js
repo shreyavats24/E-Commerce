@@ -86,8 +86,7 @@ function middleware(req,res,next){//chck if cookies exists verified token nd giv
     }
 }
 
-async function checkRole(req,res,next){
-   
+async function checkdisable(req,res,next){
     var sessionData = getUser(req.cookies.mycookie);
     let data;
     if(sessionData){
@@ -97,7 +96,7 @@ async function checkRole(req,res,next){
             next();
         }
         else if(user.isdisable){
-            data="Sorry,Admin disabled you!!";
+            data=`Sorry,Admin disabled you!!<br><a href="/">Go to home page</a>`;
             res.send({data});
         }
         else
@@ -109,10 +108,37 @@ async function checkRole(req,res,next){
     else{
         data="failure";
         res.send({data});
+        // res.redirect("/")
     }
     
 }
+async function checkdisableOrder(req,res,next){
+    var sessionData = getUser(req.cookies.mycookie);
+    let data;
+    if(sessionData){
+        var user = await userModel.findOne({email:sessionData.email});
+        if(!user.isdisable)
+        {
+            next();
+        }
+        else if(user.isdisable){
+            data=`Sorry,Admin disabled you!!<br><a href="/">Go to home page</a>`;
+            res.send({data});
+        }
+        else
+        {
+            // data="failure";
+            // res.send({data});
+            res.redirect("/")
+        }
+    }
+    else{
+        data="failure";
+        // res.send({data});
+         res.redirect("/")
+    }
+}
 module.exports={
     verify,
-    middleware,changePassword,checkRole
+    middleware,changePassword,checkdisable,checkdisableOrder
 }

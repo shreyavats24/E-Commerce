@@ -1,16 +1,15 @@
-const { calculateBill, deleteItem, updateQtyEmptyCart } = require("../controllers/cartFunction");
+const { calculateBill,checkQuantity, deleteItem, updateQtyEmptyCart } = require("../controllers/cartFunction");
 const userModel = require("../models/userSchema");
 const express = require("express");
 const router = express.Router();
-const { checkRole } = require("../controllers/Authentication");
+const { checkdisable,checkdisableOrder } = require("../controllers/Authentication");
 const ordersModel = require("../models/ordersSchema");
 const productModel = require("../models/productSchema");
 const { makeToken, getUser } = require("../controllers/token");
+const { placeOrder } = require("../controllers/orderFunctions");
 
-
-
-
-router.get("/cart", checkRole, async (req, res) => {
+// render cart page
+router.get("/cart", checkdisable, async (req, res) => {
     console.log("inside get cart");
     var sessionData = getUser(req.cookies.mycookie);
     let user = await userModel.findOne({ email: sessionData.email }).populate("cart.pId");
@@ -21,13 +20,15 @@ router.get("/cart", checkRole, async (req, res) => {
     }
 })
 
-router.post("/cart", checkRole, async (req, res) => {
+// add items to cart
+router.post("/cart", checkdisable, async (req, res) => {
     console.log("inside post cart");
     var sessionData = getUser(req.cookies.mycookie);
     let pId = req.body.id;
     if (sessionData) {
         try {
-            console.log(sessionData.email);
+            // console.log(sessionData.email);
+
             const user = await userModel.findOne(
                 {
                     email: sessionData.email,
@@ -41,7 +42,7 @@ router.post("/cart", checkRole, async (req, res) => {
                         { email: sessionData.email, "cart._id": user.cart[0]._id }, // Query to match email and the cart with a specific pId
                         { $inc: { "cart.$.pQuantity": 1 } }, // Update the quantity of the matched cart item
                         { new: true } // Return the updated document
-                    ).populate("cart.pId");
+                    );
                     //calculate total bill based on qty chnge
                     const bill = await calculateBill(sessionData.email);
                     let data = "success"
@@ -82,11 +83,11 @@ router.post("/cart", checkRole, async (req, res) => {
 
 })
 
-router.get("/order", checkRole, async (req, res) => {
+router.get("/order", checkdisableOrder, async (req, res) => {
     var sessionData = getUser(req.cookies.mycookie);
     console.log("/order");
     if (sessionData) {
-        const order = await ordersModel.findOne({ email: sessionData.email }).populate("orders.cart.pId");
+        const order = await ordersModel.findOne({ userId: sessionData.id }).populate("orders.cart.pId");
         if (order)
             res.render("order", { order: order.orders, data: order, len: order.orders.length, login: true, username: sessionData.username, role: sessionData.role });
         else
@@ -148,11 +149,6 @@ router.patch("/changeQuantity", async (req, res) => {
                             qty = elem.pQuantity;
                         }
                     })
-                    // if(qty==0)
-                    // {
-                    //     await deleteItem(user.email,id,res);
-                    // }
-                    // else{
                         let bill = await calculateBill(sessionData.email);
                         res.json({ data, bill, qty});
                     // }   
@@ -188,105 +184,11 @@ router.get("/check",async (req, res) => {
     }
 })
 
-async function checkQuantity(cart){
-    let flag=0;
-    let obj ;
-    console.log("inn check qty funct");
-    const products = await productModel.find({isdisable:false});
-    // console.log("Products",products);
-    cart.forEach((elem)=>{
-        products.forEach((pelem)=>{
-            if(pelem._id.equals(elem.pId._id))
-            {
-                console.log("matched!");
-                if(pelem.quantity<elem.pQuantity)
-                {
-                    // console.log("productName",pelem.productName)
-                    obj ={
-                        pname:pelem.productName,
-                        check:0,qty:pelem.quantity,
-                    };
-                    flag=1;
-                }
-            }
-        })
-    })
-    if(flag==1){
-        return obj;
-    }
-    else{
-        obj ={
-            pname:"success",
-            check:1
-        };
-        return obj;
-    }
-    
-}
+
 
 router.post("/submitOrder", async (req, res) => {
     console.log("/submit");
-    let place = req.body.address;
-    let mode = req.body.mod;
-    let sessionData = getUser(req.cookies.mycookie);
-    if (sessionData) {
-        try {
-            const user = await userModel.findOne({ email: sessionData.email }).populate("cart.pId");
-            const orderData = await ordersModel.findOne({ userId: user._id });
-            if (user.cart.length > 0) {
-                let result = await checkQuantity(user.cart);
-                console.log("R",result);
-                if(result.check)
-                {
-                    const ordersDetails = {
-                        cart: user.cart,
-                        address: place,
-                        modeOfPayment: mode,
-                        totalBill: user.billAmount + 10,   //rs 10 shipping charges 
-                    }
-                    let order;
-                    if (!orderData) {
-                        //if user dont have order history till now create a new 
-                        order = new ordersModel({
-                            userId: user._id,
-                            email: sessionData.email,
-                            status: true,
-                            orders: [ordersDetails]
-                        })
-                        await order.save();
-                        if (order)
-                            await updateQtyEmptyCart(user.cart, sessionData.email, res);
-                        else {
-                            res.send("Something Went Wrong!!");
-                        }
-                    }
-                    else {
-                        //update existing order doc
-                        order = await ordersModel.findOneAndUpdate({ userId: user._id }, {
-                            $push: { orders: ordersDetails }
-                        }, { new: true });
-                        if (order) {
-                            await updateQtyEmptyCart(user.cart, sessionData.email, res);
-                        }
-                    }
-                }
-                else
-                {
-                    console.log("else");
-                    res.send(`${result.pname} have only ${result.qty} quantity available!!`);
-                }    
-            }
-            else {
-                res.send("Cart is Empty!!");
-            }
-        } catch (err) {
-            console.log(err);
-            res.send("Failed");
-        }
-    }
-    else {
-        res.send('Sorry,you are unauthorised for this route!!!<br><br><a href="/">Go Back to Home Page</a>');
-    }
+    await placeOrder(req,res);
 })
 
 router.delete("/deleteItem", async (req, res) => {

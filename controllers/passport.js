@@ -1,3 +1,4 @@
+// passport js is a middleware used for authentication we can do local ,jwt and through ur account on google facebook or insta
 const jwtPassport = require("passport-jwt");
 const Strategy = jwtPassport.Strategy;
 const extractJWT = jwtPassport.ExtractJwt; 
@@ -29,6 +30,8 @@ module.exports = function jwtMethod(passport){
             {
                 throw new Error("User not found");
             }
+
+            
             // else if(user.password!= users.password)
             // {
             //     // console.log("inside paswrd not");
