@@ -49,8 +49,8 @@ const User = new mongoose.Schema({//sub schema
         type:Number,
         min:[1,"price cant be negative"]
     },
-    orderId:{type:mongoose.Schema.Types.ObjectId,
-        ref:"orders"},
+    // orderId:{type:mongoose.Schema.Types.ObjectId,
+    //     ref:"orders"},
     isdisable:Boolean
 });
 

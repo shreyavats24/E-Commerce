@@ -4,9 +4,9 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const passport = require("passport");
+const passport = require("passport");//authentication middleware
 const jwtMethod = require("./controllers/passport");
-const adminRouter = require("./routes/sampleAdmin");
+const adminRouter = require("./routes/Admin");
 const commonRouter = require("./routes/commonRouter");
 const userRouter = require("./routes/userRouter");
 const resetRouter= require("./routes/resetPassword");
@@ -18,7 +18,6 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"public")));
-
 
 jwtMethod(passport);
 

@@ -15,7 +15,7 @@ function makeToken(userObj,singleField = false )
             username:userObj.username,
             email:userObj.email,
             // password:userObj.passcode,
-        role:userObj.role,
+            role:userObj.role,
             id:userObj.id,
             image:userObj.image
             // time:userObj.time

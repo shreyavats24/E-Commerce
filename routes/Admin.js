@@ -76,6 +76,7 @@ router.put("/updateProduct",async (req,res)=>{
     res.send("Quantity Cant be less than 0")
 })
 
+//showing details of user present in db for disable page
 router.get("/data",async (req, res) => {
     var sessionData = getUser(req.cookies.mycookie);
 
@@ -130,6 +131,7 @@ router.get("/sellerDetail",async (req,res)=>{
     else
         res.send('Sorry,you are unauthorised for this route!!!<br><br><a href="/">Go Back to Home Page</a>');
 })
+
 router.patch("/disable",async (req,res)=>{
     let id = req.body.id;
     let state = req.body.state;

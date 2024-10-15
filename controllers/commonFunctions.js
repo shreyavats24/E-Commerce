@@ -3,33 +3,35 @@ const multer = require("multer");
 const path = require("path");
 const {getUser} = require("../controllers/token");
 const productModel = require("../models/productSchema");
+const userModel = require("../models/userSchema");
 var img;
+//multer used for profile image
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'public/images'); // Save to the 'uploads' folder
-    }, 
+        cb(null, 'public/images'); // Save to the 'uploads' folder
+    },
     filename: async function (req, file, cb) {
-      img=await file.fieldname + '-' + Date.now() + path.extname(file.originalname);
-      cb(null,img); // Define the file name
+        img = await file.fieldname + '-' + Date.now() + path.extname(file.originalname);
+        cb(null, img); // Define the file name
     }
 });
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 // save product that admin or seller is uploading...
 async function saveProduct(req,res){
     try{
-        if(req.body.img.trim() !="" && req.body.productName.trim() !="" && req.body.price.trim() !="" && req.body.size.trim() !="" && req.body.description.trim() !="")
+        if(img!="" && req.body.productName.trim() !="" && req.body.price.trim() !="" && req.body.size.trim() !=""  && req.body.price>1 && req.body.qty >0)
         {
             var data = getUser(req.cookies.mycookie);
-        var products=await new productModel({
+            var products=await new productModel({
             adminId:data.id,
             image:"/images/"+img,
             productName:req.body.productName,
             price:req.body.price,
             quantity:req.body.qty, 
             Size:req.body.size,
-            description:req.body.description
+            description:req.body.description||""
         })
         products.save().then(async (doc)=>{
             console.log("Product created:",doc);
@@ -49,7 +51,7 @@ async function saveProduct(req,res){
         .catch((err)=>console.log(err));
         }
         else{
-            
+            res.redirect("/productPage");
         }
     }
     catch(err){
@@ -91,4 +93,24 @@ async function updateProduct(data,productId,res)
     }
 }
 
-module.exports ={ saveProduct,upload,updateProduct,deleteProduct}
+// upload profile image
+async function uploadProfile(req,res){
+    var user = getUser(req.cookies.mycookie);
+    if(user)
+    {
+        try{
+            await userModel.findOneAndUpdate({ username: user.username, email: user.email }, {
+                image: "/images/" + img
+            });
+        }catch(err){
+            console.log("upload profile error:",err);
+        }
+        res.redirect("/user/profile");
+        img=undefined;
+    }
+    else{
+        res.redirect("/");
+    }
+}
+
+module.exports ={ saveProduct,uploadProfile,upload,updateProduct,deleteProduct}

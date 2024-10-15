@@ -107,7 +107,6 @@ async function checkQuantity(cart){
     let obj ;
     console.log("inn check qty funct");
     const products = await productModel.find({isdisable:false});
-    // console.log("Products",products);
     cart.forEach((elem)=>{
         products.forEach((pelem)=>{
             if(pelem._id.equals(elem.pId._id))
@@ -115,7 +114,6 @@ async function checkQuantity(cart){
                 console.log("matched!");
                 if(pelem.quantity<elem.pQuantity)
                 {
-                    // console.log("productName",pelem.productName)
                     obj ={
                         pname:pelem.productName,
                         check:0,qty:pelem.quantity,

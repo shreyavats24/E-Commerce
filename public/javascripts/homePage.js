@@ -31,7 +31,6 @@ description.forEach(function (button) {
 for (const addButton of addTocart) {
   addButton.addEventListener("click", (event) => {
     // alert("click");
-    count++;
     let parentId = event.target.parentElement.id; //parent Id is the id of product given to div
     // event.target.style.backgroundColor ="red";
     addProduct2Cart(parentId, event.target);
@@ -150,9 +149,10 @@ function displayProduct(data) {
 }
 if(showMore){
 showMore.addEventListener("click", (event) => {
+  count++;
   showMore.disabled = true;
   console.log("inside show more event ");
-  fetch("/getProducts", {
+  fetch(`/getProducts${count}`, {
     method: "GET",
   })
     .then((resp) => {

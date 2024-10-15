@@ -2,7 +2,7 @@ const { calculateBill,checkQuantity, deleteItem, updateQtyEmptyCart } = require(
 const userModel = require("../models/userSchema");
 const express = require("express");
 const router = express.Router();
-const { checkdisable,checkdisableOrder } = require("../controllers/Authentication");
+const { checkdisable,checkdisableUser } = require("../controllers/Authentication");
 const ordersModel = require("../models/ordersSchema");
 const productModel = require("../models/productSchema");
 const { makeToken, getUser } = require("../controllers/token");
@@ -27,8 +27,6 @@ router.post("/cart", checkdisable, async (req, res) => {
     let pId = req.body.id;
     if (sessionData) {
         try {
-            // console.log(sessionData.email);
-
             const user = await userModel.findOne(
                 {
                     email: sessionData.email,
@@ -83,7 +81,7 @@ router.post("/cart", checkdisable, async (req, res) => {
 
 })
 
-router.get("/order", checkdisableOrder, async (req, res) => {
+router.get("/order", checkdisableUser, async (req, res) => {
     var sessionData = getUser(req.cookies.mycookie);
     console.log("/order");
     if (sessionData) {
@@ -138,10 +136,6 @@ router.patch("/changeQuantity", async (req, res) => {
                     { $inc: { "cart.$.pQuantity": -1 } }, // Update the quantity of the matched cart item
                     { new: true, "cart.$": 1, "cart.$._id": 1 } // Return the updated document
                 )
-                // if (user.cart[0].pQuantity < 1) {
-                //     await deleteItem(user.email,id, res);
-                // }
-                // else {
                     let data = "success";
                     user.cart.forEach((elem)=>{
                         if(elem._id == id)
@@ -151,8 +145,6 @@ router.patch("/changeQuantity", async (req, res) => {
                     })
                         let bill = await calculateBill(sessionData.email);
                         res.json({ data, bill, qty});
-                    // }   
-                // }
             }
             else{
                 let data = "success";
@@ -170,17 +162,13 @@ router.patch("/changeQuantity", async (req, res) => {
 
 
 router.get("/check",async (req, res) => {
-    // console.log("inn");
     var sessionData = getUser(req.cookies.mycookie);
     if (!sessionData) {
         res.send("UnAuthorised!!");
     }
     else {
         let user = await userModel.findOne({ email: sessionData.email }).populate("cart.pId");
-        // let result= checkQuantity(user.cart);
-        // if(result)
         res.render("checkOut", { login: true, username: sessionData.username, role: sessionData.role, cart: user.cart, bill: user.billAmount, email: sessionData.email });
-        
     }
 })
 

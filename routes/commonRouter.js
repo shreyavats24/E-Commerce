@@ -5,30 +5,14 @@ const validator = require("validator");
 const argon = require("argon2");
 const { bcryptPassword, comparePassword } = require("../controllers/bcryptPassword");
 const router = express.Router();
+const {renderProducts} = require("../controllers/getProducts");
 const { makeToken, getUser } = require("../controllers/token");
-const { verify, changePassword, middleware } = require("../controllers/Authentication");
+const { verify, changePassword, middleware,signin,login,check, updatePasswordInDB } = require("../controllers/Authentication");
 const productModel = require("../models/productSchema");
 const path = require("path");
-// const ordersModel = require("../models/ordersSchema");
-// const { checkRole } = require("../controllers/Authentication");
+const{upload,uploadProfile} = require("../controllers/commonFunctions")
 const { get5Products, getProducts,getProductexceptSelf } = require("../controllers/getProducts");
-// const { calculateBill, deleteItem, updateQtyEmptyCart } = require("../controllers/cartFunction");
-var img;
 var errorMsg = null;
-
-//multer used for profile image
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/images'); // Save to the 'uploads' folder
-    },
-    filename: async function (req, file, cb) {
-        img = await file.fieldname + '-' + Date.now() + path.extname(file.originalname);
-        cb(null, img); // Define the file name
-    }
-});
-
-const upload = multer({ storage: storage });
-
 var count = 1;
 
 //load home page with 5 products 
@@ -59,57 +43,7 @@ router.get("/login", async (req, res) => {
 
 //find user in db if exits else redirect to signup page
 router.post("/login", async (req, res) => {
-    console.log("inside /login");
-    if (validator.isEmail(req.body.email)) {
-        try {
-            var user = await userModel.findOne({email: req.body.email});
-            if (user) 
-            {
-                if (!user.isdisable) {
-                    let check = await comparePassword(req.body.passcode, user.password);//compare bcrypt pswrd to plain pssword
-                    if (check) {
-                        var obj = {
-                            username: user.username,
-                            email: user.email,
-                            // passcode: user.password,
-                            role: user.role,
-                            id: user._id,
-                            image: user.image
-                        };
-                        // console.log("user.image", user.image);
-                        const token = makeToken(obj); //create token
-                        res.cookie("mycookie", token);//store in cookie 
-                        errorMsg =null;
-                        res.redirect(`/${user.role}/profile`);
-                    }
-                    else {
-                        errorMsg ="Invalid Credentials!!";
-                        res.redirect("/login");
-                    }
-                }
-                else if(user.isdisable) {
-                    res.send("Sorry,you are disabled by admin!!!")
-                }
-                else if(user.username !=req.body.username) {
-                    // console.log(req.body);
-                    errorMsg ="Invalid Credentials!!";
-                    res.redirect("/login");
-                }
-            }
-            else{
-                errorMsg ="Please Signup!!";
-                res.redirect("/login");
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
-    else{
-        errorMsg ="Invalid Credentials!!";
-        res.redirect("/login");
-    }
-
+    await login(req,res);
 });
 
 //render signup page
@@ -135,64 +69,13 @@ router.post("/verify", verify, (req, res) => {
 
 //verify otp and then create user in db
 router.post("/signin", async (req, res) => {
-    console.log("inside /signin");
-    try {
-        let data = req.body.otp;
-        data = data.toString();//stringify to match value of otp
-        let otp = await argon.verify(req.cookies.mycookieO, data)
-        if (otp) {
-            console.log("otp");
-            res.clearCookie('mycookieO');//clear otp cookie
-            const user = getUser(req.cookies.mycookieD);//signup detaild
-            let passcode = await bcryptPassword(user.password);//bcrypt password
-            var obj = new userModel({
-                username: user.username,
-                email: user.email,
-                password: passcode,  
-                role: user.role,
-                isdisable: false
-            });
-            await obj.save()//stored in db
-                .then(doc => {
-                    console.log('Document created:', doc);
-                    // res.clearCookie('mycookieD');//clear signup cookie
-                })
-                .catch(err => console.error('Error:', err));
-            res.redirect(`/login`);//login page 
-        }
-        else if(!otp)
-        {
-            res.redirect("/verify");
-        }
-        else {
-            // console.log("else");
-            res.redirect("/signup");
-        }
-    }
-    catch (err) {
-        console.log(err);
-    }
+    await signin(req,res);
 });
 
 
 //upload profile using multer and store db
 router.post("/uploadProfile", upload.single('profile'), async (req, res) => {
-    var user = getUser(req.cookies.mycookie);
-    if(user)
-    {
-        try{
-            await userModel.findOneAndUpdate({ username: user.username, email: user.email }, {
-                image: "/images/" + img
-            });
-        }catch(err){
-            console.log("upload profile error:",err);
-        }
-        res.redirect("/user/profile");
-    }
-    else{
-        res.redirect("/");
-    }
-    
+    await uploadProfile(req,res);
 })
 
 //about us page 
@@ -205,25 +88,8 @@ router.get("/aboutus", (req, res) => {
 })
 
 //give 5 products on show more btn and send len of next 5 
-router.get("/getProducts", async (req, res) => {
-    const user = getUser(req.cookies.mycookie);
-    if(user){
-    const products = await productModel.find({ isdisable: false,adminId: { $ne: user.id } }).skip(5 * count).limit(5);
-    count++;
-    const nextdata = await productModel.find({ isdisable: false,adminId: { $ne: user.id }}).skip(5 * (count)).limit(5);
-    if (products.length == 0)
-        count = 1;
-    res.json({ products, nextdata });  //return products array of objects to client side for dom creation
-    }
-    else{
-        const products = await productModel.find({ isdisable: false}).skip(5 * count).limit(5);
-        count++;
-        const nextdata = await productModel.find({ isdisable: false}).skip(5 * (count)).limit(5);
-        if (products.length == 0)
-            count = 1;
-        res.json({ products, nextdata });  //return products array of objects to client side for dom creation
-    }
-   
+router.get("/getProducts:num", async (req, res) => {
+   await renderProducts(req,res); 
 })
 
 // send product detail for description
@@ -252,25 +118,7 @@ router.post("/forgetPassword", changePassword, async (req, res) => {
     res.render("Rotp", { login: null, username: null, role: null });
     // res.redirect("/login");
 })
-// verifying otp
-async function check(req, res, next) {
-    // console.log("inn checkk");
-    if (req.cookies.mCe) {
-        let data = req.body.otp;
-        data = data.toString();//stringify to match value of otp
-        let otp = await argon.verify(req.cookies.mycookieO, data)
-        if (otp) {
-            res.clearCookie('mycookieO');//clear otp cookie
-            next();
-        }
-        else {
-            res.send("Invalid Data!!!<a href='/'>Go to home page</a>")
-        }
-    }
-    else {
-        res.send("unauthorised");
-    }
-}
+
 
 //check if the email is there in the token verify the otp with otp user sent
 // if both matches then render newpswrd page ask uh to enter it twice
@@ -280,22 +128,7 @@ router.post("/otpSent", check, (req, res) => {
 
 // chnge the password in db
 router.post("/change", async (req, res) => {
-    let password = req.body.confirmpassword;
-    let mail = getUser(req.cookies.mCe);
-    let Bpassword = await bcryptPassword(password);
-    if (mail && Bpassword) {
-        try {
-            console.log("inside try")
-            await userModel.findOneAndUpdate({ email: mail.email }, { password: Bpassword })
-            res.clearCookie("mCe");
-            res.send("Successfully Updated!!");
-        } catch (err) {
-            console.log(err);
-        }
-    }
-    else {
-        res.send('Something went wrong <a href="/">Go to home page</a>')
-    }
+    await updatePasswordInDB(req,res);
 
 })
 
