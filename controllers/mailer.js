@@ -6,14 +6,14 @@ async function sendEmail(mail)
         host:"smtp.gmail.com",
         port:465,
         auth:{
-            user:"shreya.223038@gmail.com",
+            user:"yourEmail@gmail.com",
             pass:"iqlzsuaskkywxmng"
         }
     });
     let otp= await getRandomFourDigit();
 
     let info = await transporter.sendMail({
-        from:"shreya.223038@gmail.com",
+        from:"yourEmail@gmail.com",
         to:mail,
         subject:"OTP verification",
         text:`This is your otp: ${otp} for verification.please don't share this with anyone.`
